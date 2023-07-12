@@ -1,3 +1,5 @@
+use std::{fs, path::Path};
+
 #[derive(Debug, PartialEq)]
 struct Issue {
     issue_number: u16,
@@ -11,7 +13,25 @@ fn main() {
 }
 
 fn parse_markdown_file(path_to_markdown_file: &str) -> Issue {
-    todo!()
+    let file_content = fs::read_to_string(path_to_markdown_file).expect("Unable to read file");
+    let file_lines: Vec<&str> = file_content.lines().collect();
+
+    let issue_number = Path::new(path_to_markdown_file)
+        .file_stem()
+        .and_then(|stem| stem.to_str())
+        .unwrap()
+        .parse::<u16>()
+        .unwrap();
+    let watson = file_lines[0].to_string();
+    let severity = file_lines[2].to_string();
+    let title = file_lines[4].trim_start_matches('#').trim().to_string();
+
+    Issue {
+        issue_number,
+        watson,
+        severity,
+        title,
+    }
 }
 
 #[cfg(test)]
