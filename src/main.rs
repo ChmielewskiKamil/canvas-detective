@@ -19,6 +19,33 @@ fn main() {
 ////////////////////////////////////////////////////////////////////
 
 #[allow(dead_code)]
+fn parse_directory(path_to_directory: &str) -> Vec<Issue> {
+    let mut issues: Vec<Issue> = Vec::new();
+
+    let mut paths: Vec<_> = fs::read_dir(path_to_directory)
+        .unwrap()
+        .map(|entry| entry.unwrap().path())
+        .collect();
+
+    // Path sorting is not guaranteed by the OS. 
+    // In order to have 001 before 002 every single time,
+    // it is necessary to sort the paths ourselves.
+    paths.sort_unstable_by_key(|path| {
+        path.file_stem()
+            .and_then(|stem| stem.to_str())
+            .and_then(|filename| filename.parse::<u16>().ok())
+    });
+
+    for path in paths {
+        let path_str = path.to_str().unwrap();
+        let issue = parse_markdown_file(path_str);
+        issues.push(issue);
+    }
+
+    issues
+}
+
+#[allow(dead_code)]
 fn parse_markdown_file(path_to_markdown_file: &str) -> Issue {
     let file_content = fs::read_to_string(path_to_markdown_file).expect("Unable to read file");
     let file_lines: Vec<&str> = file_content.lines().collect();
