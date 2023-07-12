@@ -118,6 +118,35 @@ mod test_parsing {
 
         assert_eq!(parsing_result, expected_result);
     }
+
+    #[test]
+    fn it_should_parse_directory() {
+        let path_to_directory: &str = "tests/test_data/directory_of_issues";
+        let parsing_result: Vec<Issue> = parse_directory(&path_to_directory);
+
+        let expected_result = vec![
+            Issue {
+                issue_number: 001,
+                watson: "John Doe".to_string(),
+                severity: "medium".to_string(),
+                title: "This is a medium severity bug".to_string(),
+            },
+            Issue {
+                issue_number: 002,
+                watson: "John Doe".to_string(),
+                severity: "medium".to_string(),
+                title: "This is a medium severity bug".to_string(),
+            },
+            Issue {
+                issue_number: 003,
+                watson: "John Doe".to_string(),
+                severity: "medium".to_string(),
+                title: "This is a medium severity bug".to_string(),
+            },
+        ];
+
+        assert_eq!(parsing_result, expected_result);
+    }
 }
 
 #[cfg(test)]
