@@ -16,6 +16,7 @@ fn main() {
 //                            Parsing                             //
 ////////////////////////////////////////////////////////////////////
 
+#[allow(dead_code)]
 fn parse_markdown_file(path_to_markdown_file: &str) -> Issue {
     let file_content = fs::read_to_string(path_to_markdown_file).expect("Unable to read file");
     let file_lines: Vec<&str> = file_content.lines().collect();
@@ -42,6 +43,7 @@ fn parse_markdown_file(path_to_markdown_file: &str) -> Issue {
 //                      Canvas Node Generation                    //
 ////////////////////////////////////////////////////////////////////
 
+#[allow(dead_code)]
 fn generate_label(issue: &Issue) -> String {
     todo!();
 }
