@@ -51,11 +51,13 @@ fn parse_markdown_file(path_to_markdown_file: &str) -> Issue {
 
 #[allow(dead_code)]
 fn generate_canvas_node(issue: &Issue) -> String {
-    let label = generate_label(&issue);
-    let id = generate_id(&label);
+    let node_label = generate_label(&issue);
+    let node_id = generate_id(&node_label);
+    let node_x = calculate_node_x(issue.issue_number);
+    let node_y = calculate_node_y(issue.issue_number);
     let canvas_node = format!(
-        r#"{{"type":"text","text":"{}","id":"{}","x":0,"y":0,"width":300,"height":150}}"#,
-        label, id
+        r#"{{"type":"text","text":"{}","id":"{}","x":{},"y":{},"width":300,"height":150}}"#,
+        node_label, node_id, node_x, node_y
     );
     canvas_node
 }
@@ -82,6 +84,17 @@ fn calculate_hash<T: Hash>(t: &T) -> u64 {
     s.finish()
 }
 
+fn calculate_node_x(issue_number: u16) -> u16 {
+    let column_number = (issue_number - 1) % 20;
+    let x_coordinate = column_number * 360;
+    x_coordinate
+}
+
+fn calculate_node_y(issue_number: u16) -> u16 {
+    let row_number = (issue_number - 1) / 20;
+    let y_coordinate = row_number * 300;
+    y_coordinate
+}
 ////////////////////////////////////////////////////////////////////
 //                             Tests                              //
 ////////////////////////////////////////////////////////////////////
