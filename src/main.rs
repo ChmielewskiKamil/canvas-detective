@@ -1,5 +1,17 @@
+#[derive(Debug, PartialEq)]
+struct Issue {
+    issue_number: u16,
+    watson: String,
+    severity: String,
+    title: String,
+}
+
 fn main() {
     println!("Hello, world!");
+}
+
+fn parse_markdown_file(path_to_markdown_file: &str) -> Issue {
+    todo!()
 }
 
 #[cfg(test)]
