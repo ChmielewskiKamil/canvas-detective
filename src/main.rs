@@ -27,8 +27,12 @@ fn parse_markdown_file(path_to_markdown_file: &str) -> Issue {
         .unwrap()
         .parse::<u16>()
         .unwrap();
+    // Sherlock issues start with the watson's nickname
     let watson = file_lines[0].to_string();
+    // followed by newline and severity, either high or medium
     let severity = file_lines[2].to_string();
+    // Markdown H1 issue title is on the 5th line.
+    // It will be used as a text shown on the canvas note.
     let title = file_lines[4].trim_start_matches('#').trim().to_string();
 
     Issue {
