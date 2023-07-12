@@ -53,3 +53,23 @@ mod test_parsing {
         assert_eq!(parsing_result, expected_result);
     }
 }
+
+#[cfg(test)]
+mod test_serializing {
+    use super::*;
+    #[test]
+    fn it_should_generate_issue_label() {
+        let input_issue = Issue {
+            issue_number: 001,
+            watson: "John Doe".to_string(),
+            severity: "medium".to_string(),
+            title: "This is a medium severity bug".to_string(),
+        };
+
+        let generated_label = generate_label(&input_issue);
+
+        let expected_label = r#"001 - This is a medium severity bug"#;
+
+        assert_eq!(generated_label, expected_label);
+    }
+}
