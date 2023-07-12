@@ -1,4 +1,6 @@
 use std::{fs, path::Path};
+use std::collections::hash_map::DefaultHasher;
+use std::hash::{Hash, Hasher};
 
 #[derive(Debug, PartialEq)]
 struct Issue {
@@ -53,6 +55,20 @@ fn generate_label(issue: &Issue) -> String {
     // e.g. `001 - This is a medium severity bug`
     // or `012 - This is a high severity bug`
     format!("{:03} - {}", issue.issue_number, issue.title)
+}
+
+#[allow(dead_code)]
+fn generate_id(label: &str) -> String {
+    let hash = calculate_hash(&label);
+    // Obsidian Canvas nodes use 16 digit unique identifiers
+    let id = format!("{:016x}", hash);
+    id
+}
+
+fn calculate_hash<T: Hash>(t: &T) -> u64 {
+    let mut s = DefaultHasher::new();
+    t.hash(&mut s);
+    s.finish()
 }
 
 ////////////////////////////////////////////////////////////////////
