@@ -50,6 +50,17 @@ fn parse_markdown_file(path_to_markdown_file: &str) -> Issue {
 ////////////////////////////////////////////////////////////////////
 
 #[allow(dead_code)]
+fn generate_canvas_node(issue: &Issue) -> String {
+    let label = generate_label(&issue);
+    let id = generate_id(&label);
+    let canvas_node = format!(
+        r#"{{"type":"text","text":"{}","id":"{}","x":0,"y":0,"width":300,"height":150}}"#,
+        label, id
+    );
+    canvas_node
+}
+
+#[allow(dead_code)]
 fn generate_label(issue: &Issue) -> String {
     // 0 padded 3 digits, separated by a `-` dash, followed by the title
     // e.g. `001 - This is a medium severity bug`
@@ -135,7 +146,7 @@ mod test_serializing {
 
         let generated_canvas_node = generate_canvas_node(&issue);
 
-        let expected_result = r#"{"type":"text","text":"001 - This is a medium severity issue","id":"1426e27891c91000","x":0,"y":0,"width":300,"height":150}"#;
+        let expected_result = r#"{"type":"text","text":"001 - This is a medium severity bug","id":"1426e27891c91000","x":0,"y":0,"width":300,"height":150}"#;
 
         assert_eq!(generated_canvas_node, expected_result);
     }
