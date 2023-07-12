@@ -160,9 +160,9 @@ mod test_parsing {
             },
             Issue {
                 issue_number: 002,
-                watson: "John Doe".to_string(),
-                severity: "medium".to_string(),
-                title: "This is a medium severity bug".to_string(),
+                watson: "Jane Doe".to_string(),
+                severity: "high".to_string(),
+                title: "This is a high severity bug".to_string(),
             },
             Issue {
                 issue_number: 003,
