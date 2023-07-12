@@ -150,4 +150,37 @@ mod test_serializing {
 
         assert_eq!(generated_canvas_node, expected_result);
     }
+    #[test]
+    fn it_should_space_out_multiple_nodes() {
+        let issue1 = Issue {
+            issue_number: 001,
+            watson: "John Doe".to_string(),
+            severity: "medium".to_string(),
+            title: "This is a medium severity bug".to_string(),
+        };
+        let issue2 = Issue {
+            issue_number: 002,
+            watson: "John Doe".to_string(),
+            severity: "medium".to_string(),
+            title: "This is a medium severity bug".to_string(),
+        };
+        let issue3 = Issue {
+            issue_number: 003,
+            watson: "John Doe".to_string(),
+            severity: "medium".to_string(),
+            title: "This is a medium severity bug".to_string(),
+        };
+
+        let generated_canvas_node1 = generate_canvas_node(&issue1);
+        let generated_canvas_node2 = generate_canvas_node(&issue2);
+        let generated_canvas_node3 = generate_canvas_node(&issue3);
+
+        let expected_result1 = r#"{"type":"text","text":"001 - This is a medium severity bug","id":"1426e27891c91000","x":0,"y":0,"width":300,"height":150}"#;
+        let expected_result2 = r#"{"type":"text","text":"002 - This is a medium severity bug","id":"0b9b5099b5b2bc17","x":360,"y":0,"width":300,"height":150}"#;
+        let expected_result3 = r#"{"type":"text","text":"003 - This is a medium severity bug","id":"83eb17f90d7e7a32","x":720,"y":0,"width":300,"height":150}"#;
+
+        assert_eq!(generated_canvas_node1, expected_result1);
+        assert_eq!(generated_canvas_node2, expected_result2);
+        assert_eq!(generated_canvas_node3, expected_result3);
+    }
 }
