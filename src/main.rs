@@ -55,6 +55,10 @@ fn generate_label(issue: &Issue) -> String {
     format!("{:03} - {}", issue.issue_number, issue.title)
 }
 
+////////////////////////////////////////////////////////////////////
+//                             Tests                              //
+////////////////////////////////////////////////////////////////////
+
 #[cfg(test)]
 mod test_parsing {
     use super::*;
