@@ -119,7 +119,7 @@ mod test_serializing {
         let label = r#"001 - This is a medium severity bug"#;
         let generated_id = generate_id(&label);
 
-        let expected_id = r#"asfdfsaffas"#;
+        let expected_id = r#"1426e27891c91000"#;
 
         assert_eq!(generated_id, expected_id);
     }
