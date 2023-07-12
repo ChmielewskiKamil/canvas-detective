@@ -45,7 +45,10 @@ fn parse_markdown_file(path_to_markdown_file: &str) -> Issue {
 
 #[allow(dead_code)]
 fn generate_label(issue: &Issue) -> String {
-    todo!();
+    // 0 padded 3 digits, separated by a `-` dash, followed by the title
+    // e.g. `001 - This is a medium severity bug`
+    // or `012 - This is a high severity bug`
+    format!("{:03} - {}", issue.issue_number, issue.title)
 }
 
 #[cfg(test)]
