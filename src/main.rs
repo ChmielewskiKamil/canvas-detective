@@ -9,7 +9,7 @@ struct Issue {
 }
 
 fn main() {
-    println!("Hello, world!");
+    todo!();
 }
 
 fn parse_markdown_file(path_to_markdown_file: &str) -> Issue {
