@@ -97,4 +97,14 @@ mod test_serializing {
 
         assert_eq!(generated_label, expected_label);
     }
+
+    #[test]
+    fn it_should_generate_unique_id() {
+        let label = r#"001 - This is a medium severity bug"#;
+        let generated_id = generate_id(&label);
+
+        let expected_id = r#"asfdfsaffas"#;
+
+        assert_eq!(generated_id, expected_id);
+    }
 }
