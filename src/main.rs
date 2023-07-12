@@ -34,6 +34,11 @@ fn parse_markdown_file(path_to_markdown_file: &str) -> Issue {
     }
 }
 
+
+fn generate_label(issue: &Issue) -> String {
+    todo!();
+}
+
 #[cfg(test)]
 mod test_parsing {
     use super::*;
