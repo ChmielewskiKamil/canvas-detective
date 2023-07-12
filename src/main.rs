@@ -95,6 +95,7 @@ fn calculate_node_y(issue_number: u16) -> u16 {
     let y_coordinate = row_number * 300;
     y_coordinate
 }
+
 ////////////////////////////////////////////////////////////////////
 //                             Tests                              //
 ////////////////////////////////////////////////////////////////////
@@ -163,6 +164,7 @@ mod test_serializing {
 
         assert_eq!(generated_canvas_node, expected_result);
     }
+
     #[test]
     fn it_should_space_out_multiple_nodes() {
         let issue1 = Issue {
