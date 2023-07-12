@@ -1,6 +1,6 @@
-use std::{fs, path::Path};
 use std::collections::hash_map::DefaultHasher;
 use std::hash::{Hash, Hasher};
+use std::{fs, path::Path};
 
 #[derive(Debug, PartialEq)]
 struct Issue {
@@ -122,5 +122,21 @@ mod test_serializing {
         let expected_id = r#"1426e27891c91000"#;
 
         assert_eq!(generated_id, expected_id);
+    }
+
+    #[test]
+    fn it_should_generate_single_canvas_node() {
+        let issue = Issue {
+            issue_number: 001,
+            watson: "John Doe".to_string(),
+            severity: "medium".to_string(),
+            title: "This is a medium severity bug".to_string(),
+        };
+
+        let generated_canvas_node = generate_canvas_node(&issue);
+
+        let expected_result = r#"{"type":"text","text":"001 - This is a medium severity issue","id":"1426e27891c91000","x":0,"y":0,"width":300,"height":150}"#;
+
+        assert_eq!(generated_canvas_node, expected_result);
     }
 }
