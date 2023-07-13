@@ -61,13 +61,8 @@ fn parse_directory(path_to_directory: &str) -> Result<Vec<Issue>, String> {
 
     for path in paths {
         let path_str = path.to_str().unwrap();
-        let issue = parse_markdown_file(path_str).map_err(|err| {
-            format!(
-                "Error while parsing markdown file `{path_str}`: {err}",
-                path_str = path_str,
-                err = err
-            )
-        })?;
+        let issue = parse_markdown_file(path_str)
+            .map_err(|err| format!("Error while parsing markdown file `{path_str}`: {err}"))?;
         issues.push(issue);
     }
 
@@ -107,13 +102,8 @@ fn parse_markdown_file(path_to_markdown_file: &str) -> Result<Issue, String> {
 
 #[must_use]
 pub fn generate_canvas_file_content(directory_path: &str) -> Result<String, String> {
-    let issues = parse_directory(directory_path).map_err(|err| {
-        format!(
-            "Error while parsing directory `{directory_path}`: {err}",
-            directory_path = directory_path,
-            err = err
-        )
-    })?;
+    let issues = parse_directory(directory_path)
+        .map_err(|err| format!("Error while parsing directory `{directory_path}`: {err}"))?;
     let canvas_nodes = generate_multiple_canvas_nodes(&issues);
 
     let canvas = CanvasFile {
@@ -403,7 +393,8 @@ mod test_serializing {
     #[test]
     fn it_should_generate_canvas_file_content_given_directory() {
         let path_to_directory = "tests/test_data/directory_of_issues";
-        let generated_canvas_file_content = generate_canvas_file_content(path_to_directory).unwrap();
+        let generated_canvas_file_content =
+            generate_canvas_file_content(path_to_directory).unwrap();
 
         let expected_result = fs::read_to_string("tests/test_data/test1.canvas").unwrap();
 
