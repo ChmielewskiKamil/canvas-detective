@@ -216,7 +216,16 @@ mod test_serializing {
 
         let generated_canvas_node = generate_single_canvas_node(&issue);
 
-        let expected_result = r#"{"type":"text","text":"001 - This is a medium severity bug","id":"1426e27891c91000","x":0,"y":0,"width":300,"height":150}"#;
+        // let expected_result = r#"{"type":"text","text":"001 - This is a medium severity bug","id":"1426e27891c91000","x":0,"y":0,"width":300,"height":150}"#;
+        let expected_result = CanvasNode {
+            type: "text".to_string(),
+            text: "001 - This is a medium severity bug".to_string(),
+            id: "1426e27891c91000".to_string(),
+            x: 0,
+            y: 0,
+            width: 300,
+            height: 150,
+        };
 
         assert_eq!(generated_canvas_node, expected_result);
     }
@@ -255,8 +264,30 @@ mod test_serializing {
         assert_eq!(generated_canvas_node3, expected_result3);
     }
 
-    #[test]
-    fn it_should_generate_canvas_file() {
-
-    }
+    // #[test]
+    // fn it_should_generate_multiple_canvas_nodes() {
+    //     let issues = vec![
+    //         Issue {
+    //             issue_number: 001,
+    //             watson: "John Doe".to_string(),
+    //             severity: "medium".to_string(),
+    //             title: "This is a medium severity bug".to_string(),
+    //         },
+    //         Issue {
+    //             issue_number: 002,
+    //             watson: "John Doe".to_string(),
+    //             severity: "medium".to_string(),
+    //             title: "This is a medium severity bug".to_string(),
+    //         },
+    //         Issue {
+    //             issue_number: 003,
+    //             watson: "John Doe".to_string(),
+    //             severity: "medium".to_string(),
+    //             title: "This is a medium severity bug".to_string(),
+    //         },
+    //     ];
+    //
+    //     let generated_canvas_nodes = generate_multiple_canvas_nodes(&issues);
+    //
+    // }
 }
