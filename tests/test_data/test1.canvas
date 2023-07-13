@@ -1,7 +1,7 @@
 {
 	"nodes":[
 		{"type":"text","text":"001 - This is a medium severity bug","id":"1426e27891c91000","x":0,"y":0,"width":300,"height":150},
-		{"type":"text","text":"002 - This is a medium severity bug","id":"0b9b5099b5b2bc17","x":360,"y":0,"width":300,"height":150},
+		{"type":"text","text":"002 - This is a high severity bug","id":"d0a3d2eee544e0b5","x":360,"y":0,"width":300,"height":150},
 		{"type":"text","text":"003 - This is a medium severity bug","id":"83eb17f90d7e7a32","x":720,"y":0,"width":300,"height":150}
 	],
 	"edges":[]
