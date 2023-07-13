@@ -305,30 +305,60 @@ mod test_serializing {
         assert_eq!(generated_canvas_node3, expected_result3);
     }
 
-    // #[test]
-    // fn it_should_generate_multiple_canvas_nodes() {
-    //     let issues = vec![
-    //         Issue {
-    //             issue_number: 001,
-    //             watson: "John Doe".to_string(),
-    //             severity: "medium".to_string(),
-    //             title: "This is a medium severity bug".to_string(),
-    //         },
-    //         Issue {
-    //             issue_number: 002,
-    //             watson: "John Doe".to_string(),
-    //             severity: "medium".to_string(),
-    //             title: "This is a medium severity bug".to_string(),
-    //         },
-    //         Issue {
-    //             issue_number: 003,
-    //             watson: "John Doe".to_string(),
-    //             severity: "medium".to_string(),
-    //             title: "This is a medium severity bug".to_string(),
-    //         },
-    //     ];
-    //
-    //     let generated_canvas_nodes = generate_multiple_canvas_nodes(&issues);
-    //
-    // }
+    #[test]
+    fn it_should_generate_multiple_canvas_nodes() {
+        let issues = vec![
+            Issue {
+                issue_number: 001,
+                watson: "John Doe".to_string(),
+                severity: "medium".to_string(),
+                title: "This is a medium severity bug".to_string(),
+            },
+            Issue {
+                issue_number: 002,
+                watson: "John Doe".to_string(),
+                severity: "medium".to_string(),
+                title: "This is a medium severity bug".to_string(),
+            },
+            Issue {
+                issue_number: 003,
+                watson: "John Doe".to_string(),
+                severity: "medium".to_string(),
+                title: "This is a medium severity bug".to_string(),
+            },
+        ];
+
+        let generated_canvas_nodes = generate_multiple_canvas_nodes(&issues);
+        let expected_result = vec![
+            CanvasNode {
+                node_type: "text".to_string(),
+                text: "001 - This is a medium severity bug".to_string(),
+                id: "1426e27891c91000".to_string(),
+                x: 0,
+                y: 0,
+                width: 300,
+                height: 150,
+            },
+            CanvasNode {
+                node_type: "text".to_string(),
+                text: "002 - This is a medium severity bug".to_string(),
+                id: "0b9b5099b5b2bc17".to_string(),
+                x: 360,
+                y: 0,
+                width: 300,
+                height: 150,
+            },
+            CanvasNode {
+                node_type: "text".to_string(),
+                text: "003 - This is a medium severity bug".to_string(),
+                id: "83eb17f90d7e7a32".to_string(),
+                x: 720,
+                y: 0,
+                width: 300,
+                height: 150,
+            },
+        ];
+
+        assert_eq!(generated_canvas_nodes, expected_result);
+    }
 }
