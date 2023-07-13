@@ -1,7 +1,7 @@
+use serde::{Deserialize, Serialize};
 use std::collections::hash_map::DefaultHasher;
 use std::hash::{Hash, Hasher};
 use std::{fs, path::Path};
-use serde::{Serialize, Deserialize};
 
 #[derive(Debug, PartialEq)]
 struct Issue {
@@ -40,7 +40,7 @@ fn parse_directory(path_to_directory: &str) -> Vec<Issue> {
         .map(|entry| entry.unwrap().path())
         .collect();
 
-    // Path sorting is not guaranteed by the OS. 
+    // Path sorting is not guaranteed by the OS.
     // In order to have 001 before 002 every single time,
     // it is necessary to sort the paths ourselves.
     paths.sort_unstable_by_key(|path| {
@@ -272,10 +272,6 @@ mod test_serializing {
         let generated_canvas_node2 = generate_single_canvas_node(&issue2);
         let generated_canvas_node3 = generate_single_canvas_node(&issue3);
 
-        // let expected_result1 = r#"{"type":"text","text":"001 - This is a medium severity bug","id":"1426e27891c91000","x":0,"y":0,"width":300,"height":150}"#;
-        // let expected_result2 = r#"{"type":"text","text":"002 - This is a medium severity bug","id":"0b9b5099b5b2bc17","x":360,"y":0,"width":300,"height":150}"#;
-        // let expected_result3 = r#"{"type":"text","text":"003 - This is a medium severity bug","id":"83eb17f90d7e7a32","x":720,"y":0,"width":300,"height":150}"#;
-        
         let expected_result1 = CanvasNode {
             node_type: "text".to_string(),
             text: "001 - This is a medium severity bug".to_string(),
