@@ -45,7 +45,7 @@ fn parse_directory(path_to_directory: &str) -> Vec<Issue> {
     // it is necessary to sort the paths ourselves.
     paths.sort_unstable_by_key(|path| {
         path.file_stem()
-            .and_then(|stem| stem.to_str())
+            .and_then(std::ffi::OsStr::to_str)
             .and_then(|filename| filename.parse::<u16>().ok())
     });
 
@@ -65,7 +65,7 @@ fn parse_markdown_file(path_to_markdown_file: &str) -> Issue {
 
     let issue_number = Path::new(path_to_markdown_file)
         .file_stem()
-        .and_then(|stem| stem.to_str())
+        .and_then(std::ffi::OsStr::to_str)
         .unwrap()
         .parse::<u16>()
         .unwrap();
@@ -91,7 +91,7 @@ fn parse_markdown_file(path_to_markdown_file: &str) -> Issue {
 
 #[allow(dead_code)]
 fn generate_single_canvas_node(issue: &Issue) -> CanvasNode {
-    let node_label = generate_label(&issue);
+    let node_label = generate_label(issue);
     let node_id = generate_id(&node_label);
     let node_x = calculate_node_x(issue.issue_number);
     let node_y = calculate_node_y(issue.issue_number);
@@ -119,7 +119,7 @@ fn generate_label(issue: &Issue) -> String {
 fn generate_id(label: &str) -> String {
     let hash = calculate_hash(&label);
     // Obsidian Canvas nodes use 16 digit unique identifiers
-    let id = format!("{:016x}", hash);
+    let id = format!("{hash:016x}");
     id
 }
 
@@ -131,14 +131,14 @@ fn calculate_hash<T: Hash>(t: &T) -> u64 {
 
 fn calculate_node_x(issue_number: u16) -> u16 {
     let column_number = (issue_number - 1) % 20;
-    let x_coordinate = column_number * 360;
-    x_coordinate
+    
+    column_number * 360
 }
 
 fn calculate_node_y(issue_number: u16) -> u16 {
     let row_number = (issue_number - 1) / 20;
-    let y_coordinate = row_number * 300;
-    y_coordinate
+    
+    row_number * 300
 }
 
 ////////////////////////////////////////////////////////////////////
@@ -152,7 +152,7 @@ mod test_parsing {
     fn it_should_parse_single_issue() {
         let path_to_markdown_file: &str = "tests/test_data/001.md";
 
-        let parsing_result: Issue = parse_markdown_file(&path_to_markdown_file);
+        let parsing_result: Issue = parse_markdown_file(path_to_markdown_file);
 
         let expected_result = Issue {
             issue_number: 001,
@@ -167,7 +167,7 @@ mod test_parsing {
     #[test]
     fn it_should_parse_directory() {
         let path_to_directory: &str = "tests/test_data/directory_of_issues";
-        let parsing_result: Vec<Issue> = parse_directory(&path_to_directory);
+        let parsing_result: Vec<Issue> = parse_directory(path_to_directory);
 
         let expected_result = vec![
             Issue {
@@ -216,7 +216,7 @@ mod test_serializing {
     #[test]
     fn it_should_generate_unique_id() {
         let label = r#"001 - This is a medium severity bug"#;
-        let generated_id = generate_id(&label);
+        let generated_id = generate_id(label);
 
         let expected_id = r#"1426e27891c91000"#;
 
