@@ -3,18 +3,18 @@ use std::collections::hash_map::DefaultHasher;
 use std::hash::{Hash, Hasher};
 use std::{fs, path::Path};
 
-#[derive(Debug, Serialize, Deserialize, PartialEq)]
-struct CanvasFile {
-    nodes: Vec<CanvasNode>,
-    edges: Vec<()>,
-}
-
 #[derive(Debug, PartialEq)]
 struct Issue {
     issue_number: u16,
     watson: String,
     severity: String,
     title: String,
+}
+
+#[derive(Debug, Serialize, Deserialize, PartialEq)]
+struct CanvasFile {
+    nodes: Vec<CanvasNode>,
+    edges: Vec<()>,
 }
 
 #[derive(Debug, Serialize, Deserialize, PartialEq)]
@@ -30,7 +30,12 @@ struct CanvasNode {
 }
 
 fn main() {
-    todo!();
+    let path_to_directory = "tests/test_data/judging-test";
+    let canvas_file_content = generate_canvas_file_content(path_to_directory);
+
+    let canvas_file_path = "tests/test_data/result.canvas";
+
+    fs::write(canvas_file_path, canvas_file_content).expect("Unable to write file");
 }
 
 ////////////////////////////////////////////////////////////////////
@@ -93,7 +98,8 @@ fn parse_markdown_file(path_to_markdown_file: &str) -> Issue {
 //                      Canvas Node Generation                    //
 ////////////////////////////////////////////////////////////////////
 
-#[must_use] pub fn generate_canvas_file_content(directory_path: &str) -> String {
+#[must_use]
+pub fn generate_canvas_file_content(directory_path: &str) -> String {
     let issues = parse_directory(directory_path);
     let canvas_nodes = generate_multiple_canvas_nodes(&issues);
 
@@ -106,10 +112,7 @@ fn parse_markdown_file(path_to_markdown_file: &str) -> Issue {
 }
 
 fn generate_multiple_canvas_nodes(issues: &[Issue]) -> Vec<CanvasNode> {
-    issues
-        .iter()
-        .map(generate_single_canvas_node)
-        .collect()
+    issues.iter().map(generate_single_canvas_node).collect()
 }
 
 fn generate_single_canvas_node(issue: &Issue) -> CanvasNode {
@@ -149,13 +152,13 @@ fn calculate_hash<T: Hash>(t: &T) -> u64 {
     s.finish()
 }
 
-fn calculate_node_x(issue_number: u16) -> u16 {
+const fn calculate_node_x(issue_number: u16) -> u16 {
     let column_number = (issue_number - 1) % 20;
 
     column_number * 360
 }
 
-fn calculate_node_y(issue_number: u16) -> u16 {
+const fn calculate_node_y(issue_number: u16) -> u16 {
     let row_number = (issue_number - 1) / 20;
 
     row_number * 300
