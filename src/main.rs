@@ -368,4 +368,18 @@ mod test_serializing {
 
         assert_eq!(generated_canvas_nodes, expected_result);
     }
+
+    #[test]
+    fn it_should_generate_canvas_file_content_given_directory() {
+        let path_to_directory = "tests/test_data/directory_of_issues";
+        let generated_canvas_file_content = generate_canvas_file_content(path_to_directory);
+
+        let expected_result = fs::read_to_string("tests/test_data/test1.canvas").unwrap();
+
+        // Normalize whitespace by deleting it
+        let generated_normalized = generated_canvas_file_content.replace(char::is_whitespace, "");
+        let expected_normalized = expected_result.replace(char::is_whitespace, "");
+
+        assert_eq!(generated_normalized, expected_normalized);
+    }
 }
