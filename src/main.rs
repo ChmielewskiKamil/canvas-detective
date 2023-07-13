@@ -234,9 +234,8 @@ mod test_serializing {
 
         let generated_canvas_node = generate_single_canvas_node(&issue);
 
-        // let expected_result = r#"{"type":"text","text":"001 - This is a medium severity bug","id":"1426e27891c91000","x":0,"y":0,"width":300,"height":150}"#;
         let expected_result = CanvasNode {
-            type: "text".to_string(),
+            node_type: "text".to_string(),
             text: "001 - This is a medium severity bug".to_string(),
             id: "1426e27891c91000".to_string(),
             x: 0,
@@ -273,9 +272,39 @@ mod test_serializing {
         let generated_canvas_node2 = generate_single_canvas_node(&issue2);
         let generated_canvas_node3 = generate_single_canvas_node(&issue3);
 
-        let expected_result1 = r#"{"type":"text","text":"001 - This is a medium severity bug","id":"1426e27891c91000","x":0,"y":0,"width":300,"height":150}"#;
-        let expected_result2 = r#"{"type":"text","text":"002 - This is a medium severity bug","id":"0b9b5099b5b2bc17","x":360,"y":0,"width":300,"height":150}"#;
-        let expected_result3 = r#"{"type":"text","text":"003 - This is a medium severity bug","id":"83eb17f90d7e7a32","x":720,"y":0,"width":300,"height":150}"#;
+        // let expected_result1 = r#"{"type":"text","text":"001 - This is a medium severity bug","id":"1426e27891c91000","x":0,"y":0,"width":300,"height":150}"#;
+        // let expected_result2 = r#"{"type":"text","text":"002 - This is a medium severity bug","id":"0b9b5099b5b2bc17","x":360,"y":0,"width":300,"height":150}"#;
+        // let expected_result3 = r#"{"type":"text","text":"003 - This is a medium severity bug","id":"83eb17f90d7e7a32","x":720,"y":0,"width":300,"height":150}"#;
+        
+        let expected_result1 = CanvasNode {
+            node_type: "text".to_string(),
+            text: "001 - This is a medium severity bug".to_string(),
+            id: "1426e27891c91000".to_string(),
+            x: 0,
+            y: 0,
+            width: 300,
+            height: 150,
+        };
+
+        let expected_result2 = CanvasNode {
+            node_type: "text".to_string(),
+            text: "002 - This is a medium severity bug".to_string(),
+            id: "0b9b5099b5b2bc17".to_string(),
+            x: 360,
+            y: 0,
+            width: 300,
+            height: 150,
+        };
+
+        let expected_result3 = CanvasNode {
+            node_type: "text".to_string(),
+            text: "003 - This is a medium severity bug".to_string(),
+            id: "83eb17f90d7e7a32".to_string(),
+            x: 720,
+            y: 0,
+            width: 300,
+            height: 150,
+        };
 
         assert_eq!(generated_canvas_node1, expected_result1);
         assert_eq!(generated_canvas_node2, expected_result2);
