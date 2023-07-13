@@ -1,6 +1,7 @@
 use std::collections::hash_map::DefaultHasher;
 use std::hash::{Hash, Hasher};
 use std::{fs, path::Path};
+use serde::{Serialize, Deserialize};
 
 #[derive(Debug, PartialEq)]
 struct Issue {
@@ -8,6 +9,18 @@ struct Issue {
     watson: String,
     severity: String,
     title: String,
+}
+
+#[derive(Debug, Serialize, Deserialize, PartialEq)]
+struct CanvasNode {
+    #[serde(rename = "type")]
+    node_type: String,
+    text: String,
+    id: String,
+    x: u16,
+    y: u16,
+    width: u16,
+    height: u16,
 }
 
 fn main() {
@@ -77,16 +90,21 @@ fn parse_markdown_file(path_to_markdown_file: &str) -> Issue {
 ////////////////////////////////////////////////////////////////////
 
 #[allow(dead_code)]
-fn generate_single_canvas_node(issue: &Issue) -> String {
+fn generate_single_canvas_node(issue: &Issue) -> CanvasNode {
     let node_label = generate_label(&issue);
     let node_id = generate_id(&node_label);
     let node_x = calculate_node_x(issue.issue_number);
     let node_y = calculate_node_y(issue.issue_number);
-    let canvas_node = format!(
-        r#"{{"type":"text","text":"{}","id":"{}","x":{},"y":{},"width":300,"height":150}}"#,
-        node_label, node_id, node_x, node_y
-    );
-    canvas_node
+
+    CanvasNode {
+        node_type: "text".to_string(),
+        text: node_label,
+        id: node_id,
+        x: node_x,
+        y: node_y,
+        width: 300,
+        height: 150,
+    }
 }
 
 #[allow(dead_code)]
