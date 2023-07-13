@@ -88,9 +88,13 @@ fn parse_markdown_file(path_to_markdown_file: &str) -> Issue {
 ////////////////////////////////////////////////////////////////////
 //                      Canvas Node Generation                    //
 ////////////////////////////////////////////////////////////////////
+
 #[allow(dead_code)]
 fn generate_multiple_canvas_nodes(issues: &[Issue]) -> Vec<CanvasNode> {
-    issues.iter().map(|issue| generate_single_canvas_node(issue)).collect()
+    issues
+        .iter()
+        .map(|issue| generate_single_canvas_node(issue))
+        .collect()
 }
 
 fn generate_single_canvas_node(issue: &Issue) -> CanvasNode {
