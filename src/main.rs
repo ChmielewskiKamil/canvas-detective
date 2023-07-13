@@ -100,7 +100,6 @@ fn parse_markdown_file(path_to_markdown_file: &str) -> Result<Issue, String> {
 //                      Canvas Node Generation                    //
 ////////////////////////////////////////////////////////////////////
 
-#[must_use]
 pub fn generate_canvas_file_content(directory_path: &str) -> Result<String, String> {
     let issues = parse_directory(directory_path)
         .map_err(|err| format!("Error while parsing directory `{directory_path}`: {err}"))?;
