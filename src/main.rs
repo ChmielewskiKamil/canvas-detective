@@ -37,7 +37,6 @@ fn main() {
 //                            Parsing                             //
 ////////////////////////////////////////////////////////////////////
 
-#[allow(dead_code)]
 fn parse_directory(path_to_directory: &str) -> Vec<Issue> {
     let mut issues: Vec<Issue> = Vec::new();
 
@@ -94,7 +93,7 @@ fn parse_markdown_file(path_to_markdown_file: &str) -> Issue {
 //                      Canvas Node Generation                    //
 ////////////////////////////////////////////////////////////////////
 
-pub fn generate_canvas_file_content(directory_path: &str) -> String {
+#[must_use] pub fn generate_canvas_file_content(directory_path: &str) -> String {
     let issues = parse_directory(directory_path);
     let canvas_nodes = generate_multiple_canvas_nodes(&issues);
 
@@ -109,7 +108,7 @@ pub fn generate_canvas_file_content(directory_path: &str) -> String {
 fn generate_multiple_canvas_nodes(issues: &[Issue]) -> Vec<CanvasNode> {
     issues
         .iter()
-        .map(|issue| generate_single_canvas_node(issue))
+        .map(generate_single_canvas_node)
         .collect()
 }
 
