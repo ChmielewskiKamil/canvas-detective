@@ -107,7 +107,6 @@ fn generate_single_canvas_node(issue: &Issue) -> CanvasNode {
     }
 }
 
-#[allow(dead_code)]
 fn generate_label(issue: &Issue) -> String {
     // 0 padded 3 digits, separated by a `-` dash, followed by the title
     // e.g. `001 - This is a medium severity bug`
@@ -115,7 +114,6 @@ fn generate_label(issue: &Issue) -> String {
     format!("{:03} - {}", issue.issue_number, issue.title)
 }
 
-#[allow(dead_code)]
 fn generate_id(label: &str) -> String {
     let hash = calculate_hash(&label);
     // Obsidian Canvas nodes use 16 digit unique identifiers
@@ -131,13 +129,13 @@ fn calculate_hash<T: Hash>(t: &T) -> u64 {
 
 fn calculate_node_x(issue_number: u16) -> u16 {
     let column_number = (issue_number - 1) % 20;
-    
+
     column_number * 360
 }
 
 fn calculate_node_y(issue_number: u16) -> u16 {
     let row_number = (issue_number - 1) / 20;
-    
+
     row_number * 300
 }
 
