@@ -3,6 +3,12 @@ use std::collections::hash_map::DefaultHasher;
 use std::hash::{Hash, Hasher};
 use std::{fs, path::Path};
 
+#[derive(Debug, Serialize, Deserialize, PartialEq)]
+struct CanvasFile {
+    nodes: Vec<CanvasNode>,
+    edges: Vec<()>,
+}
+
 #[derive(Debug, PartialEq)]
 struct Issue {
     issue_number: u16,
@@ -58,7 +64,6 @@ fn parse_directory(path_to_directory: &str) -> Vec<Issue> {
     issues
 }
 
-#[allow(dead_code)]
 fn parse_markdown_file(path_to_markdown_file: &str) -> Issue {
     let file_content = fs::read_to_string(path_to_markdown_file).expect("Unable to read file");
     let file_lines: Vec<&str> = file_content.lines().collect();
@@ -90,6 +95,18 @@ fn parse_markdown_file(path_to_markdown_file: &str) -> Issue {
 ////////////////////////////////////////////////////////////////////
 
 #[allow(dead_code)]
+fn generate_canvas_file_content(directory_path: &str) -> String {
+    let issues = parse_directory(directory_path);
+    let canvas_nodes = generate_multiple_canvas_nodes(&issues);
+
+    let canvas = CanvasFile {
+        nodes: canvas_nodes,
+        edges: vec![],
+    };
+
+    serde_json::to_string_pretty(&canvas).unwrap()
+}
+
 fn generate_multiple_canvas_nodes(issues: &[Issue]) -> Vec<CanvasNode> {
     issues
         .iter()
