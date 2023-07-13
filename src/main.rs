@@ -94,8 +94,7 @@ fn parse_markdown_file(path_to_markdown_file: &str) -> Issue {
 //                      Canvas Node Generation                    //
 ////////////////////////////////////////////////////////////////////
 
-#[allow(dead_code)]
-fn generate_canvas_file_content(directory_path: &str) -> String {
+pub fn generate_canvas_file_content(directory_path: &str) -> String {
     let issues = parse_directory(directory_path);
     let canvas_nodes = generate_multiple_canvas_nodes(&issues);
 
