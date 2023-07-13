@@ -31,7 +31,7 @@ struct CanvasNode {
 
 fn main() {
     let path_to_directory = "tests/test_data/judging-test";
-    let canvas_file_content = generate_canvas_file_content(path_to_directory);
+    let canvas_file_content = generate_canvas_file_content(path_to_directory).unwrap();
 
     let canvas_file_path = "tests/test_data/result.canvas";
 
@@ -42,7 +42,7 @@ fn main() {
 //                            Parsing                             //
 ////////////////////////////////////////////////////////////////////
 
-fn parse_directory(path_to_directory: &str) -> Vec<Issue> {
+fn parse_directory(path_to_directory: &str) -> Result<Vec<Issue>, String> {
     let mut issues: Vec<Issue> = Vec::new();
 
     let mut paths: Vec<_> = fs::read_dir(path_to_directory)
@@ -61,15 +61,22 @@ fn parse_directory(path_to_directory: &str) -> Vec<Issue> {
 
     for path in paths {
         let path_str = path.to_str().unwrap();
-        let issue = parse_markdown_file(path_str);
+        let issue = parse_markdown_file(path_str).map_err(|err| {
+            format!(
+                "Error while parsing markdown file `{path_str}`: {err}",
+                path_str = path_str,
+                err = err
+            )
+        })?;
         issues.push(issue);
     }
 
-    issues
+    Ok(issues)
 }
 
-fn parse_markdown_file(path_to_markdown_file: &str) -> Issue {
-    let file_content = fs::read_to_string(path_to_markdown_file).expect("Unable to read file");
+fn parse_markdown_file(path_to_markdown_file: &str) -> Result<Issue, String> {
+    let file_content = fs::read_to_string(path_to_markdown_file)
+        .map_err(|err| format!("Error while reading file content to string: {err}"))?;
     let file_lines: Vec<&str> = file_content.lines().collect();
 
     let issue_number = Path::new(path_to_markdown_file)
@@ -86,12 +93,12 @@ fn parse_markdown_file(path_to_markdown_file: &str) -> Issue {
     // It will be used as a text shown on the canvas note.
     let title = file_lines[4].trim_start_matches('#').trim().to_string();
 
-    Issue {
+    Ok(Issue {
         issue_number,
         watson,
         severity,
         title,
-    }
+    })
 }
 
 ////////////////////////////////////////////////////////////////////
@@ -99,8 +106,14 @@ fn parse_markdown_file(path_to_markdown_file: &str) -> Issue {
 ////////////////////////////////////////////////////////////////////
 
 #[must_use]
-pub fn generate_canvas_file_content(directory_path: &str) -> String {
-    let issues = parse_directory(directory_path);
+pub fn generate_canvas_file_content(directory_path: &str) -> Result<String, String> {
+    let issues = parse_directory(directory_path).map_err(|err| {
+        format!(
+            "Error while parsing directory `{directory_path}`: {err}",
+            directory_path = directory_path,
+            err = err
+        )
+    })?;
     let canvas_nodes = generate_multiple_canvas_nodes(&issues);
 
     let canvas = CanvasFile {
@@ -108,7 +121,7 @@ pub fn generate_canvas_file_content(directory_path: &str) -> String {
         edges: vec![],
     };
 
-    serde_json::to_string_pretty(&canvas).unwrap()
+    Ok(serde_json::to_string_pretty(&canvas).unwrap())
 }
 
 fn generate_multiple_canvas_nodes(issues: &[Issue]) -> Vec<CanvasNode> {
@@ -175,7 +188,7 @@ mod test_parsing {
     fn it_should_parse_single_issue() {
         let path_to_markdown_file: &str = "tests/test_data/001.md";
 
-        let parsing_result: Issue = parse_markdown_file(path_to_markdown_file);
+        let parsing_result: Issue = parse_markdown_file(path_to_markdown_file).unwrap();
 
         let expected_result = Issue {
             issue_number: 001,
@@ -190,7 +203,7 @@ mod test_parsing {
     #[test]
     fn it_should_parse_directory() {
         let path_to_directory: &str = "tests/test_data/directory_of_issues";
-        let parsing_result: Vec<Issue> = parse_directory(path_to_directory);
+        let parsing_result: Vec<Issue> = parse_directory(path_to_directory).unwrap();
 
         let expected_result = vec![
             Issue {
@@ -390,7 +403,7 @@ mod test_serializing {
     #[test]
     fn it_should_generate_canvas_file_content_given_directory() {
         let path_to_directory = "tests/test_data/directory_of_issues";
-        let generated_canvas_file_content = generate_canvas_file_content(path_to_directory);
+        let generated_canvas_file_content = generate_canvas_file_content(path_to_directory).unwrap();
 
         let expected_result = fs::read_to_string("tests/test_data/test1.canvas").unwrap();
 
