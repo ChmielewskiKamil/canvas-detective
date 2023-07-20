@@ -1,3 +1,4 @@
+use clap::Parser;
 use serde::{Deserialize, Serialize};
 use std::collections::hash_map::DefaultHasher;
 use std::hash::{Hash, Hasher};
@@ -29,13 +30,32 @@ struct CanvasNode {
     height: u16,
 }
 
+#[derive(Parser, Debug)]
+#[command(author, version, about, long_about = None )]
+pub struct Args {
+    #[clap(
+        short,
+        long,
+        help = r#"Path to directory containing Sherlock judging issues."#
+    )]
+    pub input_path: String,
+
+    #[clap(
+        short,
+        long,
+        help = r#"Output path, where you want to save the created canvas file."#
+    )]
+    pub output_path: String,
+}
+
 fn main() {
-    let path_to_directory = "tests/test_data/judging-test";
-    let canvas_file_content = generate_canvas_file_content(path_to_directory).unwrap();
+    let args = Args::parse();
+    create_canvas_file(&args.input_path, &args.output_path).unwrap();
+}
 
-    let canvas_file_path = "tests/test_data/result.canvas";
-
-    fs::write(canvas_file_path, canvas_file_content).expect("Unable to write file");
+pub fn create_canvas_file(input_path: &str, output_path: &str) -> Result<(), String> {
+    let canvas_file_content = generate_canvas_file_content(input_path)?;
+    fs::write(output_path, canvas_file_content).map_err(|e| e.to_string())
 }
 
 ////////////////////////////////////////////////////////////////////
