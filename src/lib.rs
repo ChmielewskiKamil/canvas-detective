@@ -1,4 +1,4 @@
-// pub mod cli;
+pub mod cli;
 mod issue_parsing;
 mod canvas_generation;
 
