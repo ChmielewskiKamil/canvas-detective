@@ -15,7 +15,7 @@ pub struct Args {
     #[clap(
         short,
         long,
-        help = r#"Output path, where you want to save the created canvas file."#
+        help = "Output path, where you want to save the created canvas file.\nFor ex. ~/Documents/Judging/Contest.canvas"
     )]
     pub output_path: String,
 }
